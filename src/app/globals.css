@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+  background: #f7f8fb;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background: #f7f8fb;
+  color: #0f172a;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.45);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #bfc9d8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ════════════════════════════════════════════════════════════
+   LUXURY ENTERPRISE DARK MODE
+   High-contrast, elegant obsidian surfaces (Linear / Vercel grade)
+════════════════════════════════════════════════════════════ */
+html.dark {
+  color-scheme: dark;
+  background: #080c14 !important;
+}
+
+html.dark body {
+  background-color: #080c14 !important;
+  color: #f8fafc !important;
+}
+
+/* Page backgrounds */
+html.dark .bg-\[\#f4f6fa\],
+html.dark .bg-\[\#f7f8fb\],
+html.dark .bg-slate-50 {
+  background-color: #080c14 !important;
+}
+
+/* Elevated Surfaces (Cards, Modals, Menus) */
+html.dark .bg-white {
+  background-color: #0f172a !important;
+  color: #f8fafc;
+}
+
+html.dark .bg-white\/80,
+html.dark .bg-white\/90 {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(16px);
+}
+
+html.dark aside {
+  background-color: #0b111e !important;
+  border-color: #1e293b !important;
+}
+
+html.dark header {
+  background-color: rgba(11, 17, 30, 0.92) !important;
+  border-color: #1e293b !important;
+  backdrop-filter: blur(16px);
+}
+
+/* Crisp 1px Borders */
+html.dark .border-slate-200,
+html.dark .border-slate-100,
+html.dark .border-slate-300,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/90 {
+  border-color: #1e293b !important;
+}
+
+/* High-Contrast Crisp Typography */
+html.dark .text-slate-950,
+html.dark .text-slate-900 {
+  color: #ffffff !important;
+}
+
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+/* Sidebar & Nav Active states */
+html.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+html.dark .text-blue-800,
+html.dark .text-blue-700,
+html.dark .text-blue-600 {
+  color: #60a5fa !important;
+}
+
+html.dark .border-blue-100 {
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+html.dark .ring-blue-100 {
+  --tw-ring-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Interactive Hovers */
+html.dark .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #273549 !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1e293b !important;
+  color: #f1f5f9;
+}
+
+/* Inputs & Form Controls */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* SVG Chart Track Adjustments */
+html.dark circle[stroke="#e2e8f0"] {
+  stroke: #1e293b !important;
+}
+
+/* Scrollbars */
+html.dark ::-webkit-scrollbar-thumb {
+  background: #2d3748;
+}
