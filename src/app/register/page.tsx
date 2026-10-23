@@ -103,11 +103,15 @@ export default function RegisterPage() {
               placeholder="At least 6 characters"
             />
           </Field>
-          <Field label="I am a...">
+          <Field
+            label="Choose your role"
+            hint="Administrator accounts are provisioned by your institution to protect workspace access."
+          >
             <Select value={form.role} onChange={(e) => update("role", e.target.value)}>
               <option value="student">Student</option>
-              <option value="teacher">Faculty / Teacher</option>
+              <option value="teacher">Faculty</option>
               <option value="parent">Parent</option>
+              <option value="admin" disabled>Administrator · Institution provisioned</option>
             </Select>
           </Field>
           {form.role === "student" && (

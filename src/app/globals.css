@@ -40,6 +40,15 @@ button, a, input, select, textarea {
   }
 }
 
+@keyframes term-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

@@ -23,61 +23,59 @@ import {
 
 const bentoFeatures = [
   {
-    id: "pod",
-    span: "lg:col-span-2",
-    badge: "Flagship Feature",
-    badgeColor: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/20",
-    title: "Multi-Agent AI Study Pods",
-    description:
-      "Engage with three distinct Socratic personas—Elena (The Visualizer), Alex (The Skeptic), and Dr. Marcus (The Formal Examiner). Defend your understanding under rigorous cross-examination, receive instant rubric evaluations (0–100%), and invite classmates to live peer chat.",
-    icon: Sparkles,
-    metrics: [
-      { label: "AI Personas", value: "3 Agents" },
-      { label: "Rubric Scoring", value: "0–100%" },
-      { label: "Defense Synthesis", value: "Real-Time" },
-    ],
-  },
-  {
     id: "courses",
     span: "lg:col-span-1",
-    badge: "Core Architecture",
+    badge: "Coursework",
     badgeColor: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20",
-    title: "Dynamic Courses & Submissions",
+    title: "Courses & Assignments",
     description:
-      "Full syllabus management, S3-powered direct presigned document uploads, interactive lecture materials, and automated assignment submission verification.",
+      "Keep syllabi, learning materials, submissions, and rubric feedback together in one dependable course workspace.",
     icon: BookOpen,
     metrics: [
-      { label: "File Uploads", value: "AWS S3" },
-      { label: "Direct Transfer", value: "Presigned" },
+      { label: "Course materials", value: "One place" },
+      { label: "Submissions", value: "Verified" },
     ],
   },
   {
     id: "analytics",
     span: "lg:col-span-1",
-    badge: "Intelligence",
+    badge: "Real-time",
     badgeColor: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
-    title: "Longitudinal Progress & Gradebooks",
+    title: "Progress & Reporting",
     description:
-      "Real-time weighted grading calculations, automated GPA tracking, student attendance heatmaps, and downloadable verified PDF transcripts.",
+      "Follow grade trends, attendance, and learning milestones with clear reports for every course and term.",
     icon: TrendingUp,
     metrics: [
-      { label: "Telemetry", value: "Sub-Second" },
-      { label: "PDF Export", value: "One-Click" },
+      { label: "Progress", value: "Longitudinal" },
+      { label: "Transcripts", value: "Verified" },
     ],
   },
   {
     id: "rbac",
-    span: "lg:col-span-2",
-    badge: "Security & RBAC",
+    span: "lg:col-span-1",
+    badge: "Role-aware",
     badgeColor: "bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20",
-    title: "Role-Based Workspaces & Guardian Portal",
+    title: "Role-Based Workspaces",
     description:
-      "Granular role-based access control segregates access between Students, Faculty, Administrators, and Parents. Encrypted parent-student pairing enables families to track coursework and attendance without compromising institutional compliance.",
+      "Purpose-built views give students, faculty, parents, and administrators the tools and context they need.",
     icon: Users,
     metrics: [
-      { label: "Portals", value: "4 Roles" },
-      { label: "Session Security", value: "JWT + AES" },
-      { label: "Parent Sync", value: "Encrypted" },
+      { label: "Workspaces", value: "4 roles" },
+      { label: "Access", value: "Scoped" },
+    ],
+  },
+  {
+    id: "insights",
+    span: "lg:col-span-1",
+    badge: "Personalized",
+    badgeColor: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/20",
+    title: "Personalized AI Insights",
+    description:
+      "Turn learning activity into timely guidance, focused practice, and thoughtful Socratic study sessions.",
+    icon: Sparkles,
+    metrics: [
+      { label: "Study support", value: "Adaptive" },
+      { label: "Feedback", value: "Actionable" },
     ],
   },
 ];
@@ -127,16 +125,16 @@ const rolesList = [
 
 function Brand() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-indigo-500 text-white font-bold shadow-md shadow-indigo-600/20">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-indigo-500 text-white font-bold shadow-md shadow-indigo-600/20 sm:h-10 sm:w-10">
         <span className="text-base tracking-tight">E</span>
         <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
       </div>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-lg font-bold tracking-tight text-slate-950 dark:text-white">
-          EduMentor
-        </span>
-        <span className="rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+          <span className="text-base font-bold tracking-tight text-slate-950 dark:text-white sm:text-lg">
+            EduMentor
+          </span>
+          <span className="rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 sm:text-xs">
           AI
         </span>
       </div>
@@ -154,7 +152,7 @@ export default async function HomePage() {
       {/* 1. STICKY GLASSMORPHIC NAVBAR                            */}
       {/* ========================================================= */}
       <header className="sticky top-0 z-50 w-full border-b border-slate-200/70 bg-white/75 backdrop-blur-md transition-colors dark:border-slate-800/80 dark:bg-[#070B12]/80">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-10">
           <Link href="/" aria-label="EduMentor AI home">
             <Brand />
           </Link>
@@ -171,11 +169,10 @@ export default async function HomePage() {
               Features
             </a>
             <a
-              href="#studypod"
-              className="transition-colors hover:text-indigo-600 dark:hover:text-white flex items-center gap-1.5"
+              href="#analytics"
+              className="transition-colors hover:text-indigo-600 dark:hover:text-white"
             >
-              <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-              <span>AI Study Pod</span>
+              Analytics
             </a>
             <a
               href="#roles"
@@ -192,19 +189,19 @@ export default async function HomePage() {
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
             <Link
               href="/login"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="whitespace-nowrap rounded-lg px-0 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white sm:px-4 sm:text-sm"
             >
               Sign in
             </Link>
             <Link
               href="/register"
-              className="group relative inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-600/20 transition-all hover:from-blue-700 hover:via-indigo-700 hover:to-indigo-800 hover:shadow-indigo-600/30"
+              className="group relative inline-flex whitespace-nowrap items-center gap-1 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 px-2 py-2 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 transition-all hover:from-blue-700 hover:via-indigo-700 hover:to-indigo-800 hover:shadow-indigo-600/30 sm:gap-2 sm:px-4 sm:text-sm"
             >
               <span>Get started</span>
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="hidden h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 sm:block" />
             </Link>
           </div>
         </div>
@@ -218,48 +215,44 @@ export default async function HomePage() {
           {/* Ambient background glows */}
           <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[36rem] w-[50rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/15 via-blue-500/10 to-purple-500/15 blur-[100px] dark:from-indigo-600/20 dark:via-blue-600/15 dark:to-purple-600/15" />
 
-          <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 xl:gap-16">
+          <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
             {/* Left Column: Headline & CTA */}
-            <div>
+            <div className="min-w-0">
               {/* Refined Announcement Badge */}
               <div className="inline-flex items-center gap-2.5 rounded-full border border-indigo-200/80 bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-indigo-900 shadow-xs dark:border-indigo-900/60 dark:bg-slate-900/80 dark:text-indigo-300 backdrop-blur-md">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
-                <span>EduMentor AI 2.0 — Intelligent Academic Workspace</span>
+                <span>EduMentor AI 2.0 — Connected Learning Workspace</span>
               </div>
 
-              {/* High-impact Display Headline */}
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1] dark:text-white">
-                The intelligent workspace for{" "}
+                Help every learner find their{" "}
                 <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400">
-                  modern academic excellence.
+                  next step.
                 </span>
               </h1>
 
-              {/* Crisp Subheadline */}
               <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-                Orchestrate coursework, track longitudinal growth, and master difficult subjects
-                through multi-agent Socratic debate pods. Built with fine-grained RBAC for students,
-                faculty, parents, and administrators.
+                Bring courses, progress, and personalized guidance into one connected learning
+                workspace—built for students, faculty, families, and the institutions that support them.
               </p>
 
-              {/* Primary & Secondary Action Buttons */}
               <div className="mt-8 flex flex-wrap items-center gap-3.5 sm:gap-4">
                 <Link
                   href="/register"
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-200 hover:from-blue-700 hover:via-indigo-700 hover:to-indigo-800 hover:shadow-indigo-600/35 hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  <span>Start Free Workspace</span>
+                  <span>Create your account</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
-                <Link
-                  href="/login"
+                <a
+                  href="#features"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-300/80 bg-white/90 px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-xs transition hover:border-slate-400 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800/80"
                 >
-                  Explore Platform
-                </Link>
+                  Explore workspace
+                </a>
               </div>
 
               {/* Clean Trust Bar */}
@@ -280,7 +273,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right Column: Multi-Layered Interactive SaaS UI Mockup */}
-            <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+            <div className="relative mx-auto min-w-0 w-full max-w-xl lg:max-w-none">
               {/* Ambient Mockup Glow */}
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-blue-500/15 to-purple-500/20 blur-2xl dark:from-indigo-600/30 dark:via-blue-600/20 dark:to-purple-600/20" />
 
@@ -309,7 +302,7 @@ export default async function HomePage() {
                       Academic Command Center
                     </p>
                     <p className="mt-0.5 text-base font-bold text-slate-950 dark:text-white">
-                      Spring Term 2026 Overview
+                      Spring Term 2026 Learning Overview
                     </p>
                   </div>
                   <span className="rounded-lg bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
@@ -335,11 +328,11 @@ export default async function HomePage() {
 
                   <div className="rounded-xl border border-slate-200/70 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
                     <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                      Assignments
+                      Pending Assignments
                     </p>
                     <div className="mt-1 flex items-baseline justify-between">
                       <p className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-                        02
+                        03
                       </p>
                       <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400">
                         Due in 4h
@@ -361,31 +354,24 @@ export default async function HomePage() {
                     </div>
                   </div>
 
-                  {/* Progress multi-segment bar */}
                   <div className="col-span-3 rounded-xl border border-slate-200/70 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
                     <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-slate-700 dark:text-slate-300">
-                        Term Competency Index
-                      </span>
-                      <span className="text-indigo-600 dark:text-indigo-400 font-bold">
-                        94% • Exemplary
-                      </span>
+                      <span className="text-slate-700 dark:text-slate-300">Term progress</span>
+                      <span className="font-bold text-indigo-600 dark:text-indigo-400">78% · On track</span>
                     </div>
-                    <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 flex">
-                      <div className="h-full w-[45%] bg-blue-600" title="Coursework" />
-                      <div className="h-full w-[30%] bg-indigo-600" title="Attendance" />
-                      <div className="h-full w-[19%] bg-purple-600" title="Study Pod Defense" />
+                    <div
+                      className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800"
+                      role="progressbar"
+                      aria-label="Term progress"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={78}
+                    >
+                      <div className="h-full w-[78%] origin-left rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-[term-progress_1.2s_ease-out]" />
                     </div>
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-blue-600" /> Coursework (84%)
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-indigo-600" /> Attendance (98%)
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-purple-600" /> Socratic Pods (94%)
-                      </span>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                      <span>Coursework moving steadily</span>
+                      <span>Updated just now</span>
                     </div>
                   </div>
                 </div>
@@ -456,12 +442,13 @@ export default async function HomePage() {
             </div>
 
             {/* Bento Grid */}
-            <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2">
+            <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
               {bentoFeatures.map((feat) => {
                 const IconComponent = feat.icon;
                 return (
                   <article
                     key={feat.id}
+                    id={feat.id}
                     className={`group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-[#FAFAFA] p-7 transition-all duration-300 hover:border-indigo-300 hover:shadow-xl dark:border-slate-800 dark:bg-[#0B101D] dark:hover:border-indigo-900/60 ${feat.span}`}
                   >
                     <div className="flex items-center justify-between">
@@ -697,15 +684,43 @@ export default async function HomePage() {
 
                   <div className="mt-8 pt-4 border-t border-slate-200/60 dark:border-slate-800/80">
                     <Link
-                      href="/register"
+                      href={item.role === "Administrators" ? "/login" : "/register"}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
                     >
-                      <span>Join as {item.role}</span>
+                      <span>{item.role === "Administrators" ? "Administrator access" : `Join as ${item.role}`}</span>
                       <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="community-heading" className="border-t border-slate-200/80 bg-white py-16 dark:border-slate-800/80 dark:bg-slate-950 sm:py-20">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600 dark:text-indigo-400">One connected community</p>
+              <h2 id="community-heading" className="mt-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+                A clearer picture of every learner&apos;s next step.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                Keep students, educators, and families aligned with the right information and support at every stage.
+              </p>
+            </div>
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200/80 bg-[#FAFAFA] p-5 dark:border-slate-800 dark:bg-[#0B101D]">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">For students</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">Clear priorities, meaningful feedback, and a place to keep moving.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-[#FAFAFA] p-5 dark:border-slate-800 dark:bg-[#0B101D]">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">For faculty</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">Coursework and progress in view, with less time spent switching tools.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-[#FAFAFA] p-5 dark:border-slate-800 dark:bg-[#0B101D]">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">For families</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">A trusted window into learning milestones and academic wellbeing.</p>
+              </div>
             </div>
           </div>
         </section>

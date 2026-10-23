@@ -26,6 +26,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
+  const [passwordHelp, setPasswordHelp] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -113,10 +114,10 @@ function LoginForm() {
 
               <div className="mt-8 space-y-2">
                 <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
-                  Sign in to EduMentor AI
+                  Welcome back
                 </h1>
                 <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  Enter your institutional or workspace credentials to access your dashboard.
+                  Sign in to continue to your EduMentor workspace.
                 </p>
               </div>
             </div>
@@ -219,16 +220,23 @@ function LoginForm() {
                     className="h-4 w-4 rounded-md border-slate-300 text-indigo-600 transition focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900"
                   />
                   <span className="font-medium text-slate-600 dark:text-slate-400">
-                    Remember this device
+                    Remember me
                   </span>
                 </label>
-                <Link
-                  href="/register"
+                <button
+                  type="button"
+                  onClick={() => setPasswordHelp((visible) => !visible)}
+                  aria-expanded={passwordHelp}
                   className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
                 >
-                  Need password help?
-                </Link>
+                  Forgot password?
+                </button>
               </div>
+              {passwordHelp && (
+                <p role="status" className="-mt-2 rounded-lg border border-indigo-100 bg-indigo-50/70 px-3 py-2 text-xs leading-5 text-indigo-800 dark:border-indigo-900/50 dark:bg-indigo-950/30 dark:text-indigo-200">
+                  Password resets are managed by your institution. Contact your workspace administrator for help.
+                </p>
+              )}
 
               {/* Submit Button */}
               <button
@@ -261,7 +269,7 @@ function LoginForm() {
                   </div>
                 ) : (
                   <>
-                    <span>Sign in to Workspace</span>
+                    <span>Sign in</span>
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
@@ -271,12 +279,12 @@ function LoginForm() {
             {/* Bottom Register Prompt */}
             <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-slate-800/80 text-center">
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Don&apos;t have an institutional account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
                   className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline underline-offset-4"
                 >
-                  Create one now
+                  Create one
                 </Link>
               </p>
             </div>
@@ -329,7 +337,7 @@ function LoginForm() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              <span>EduMentor Platform v2.0 • Active Cluster</span>
+              <span>A connected learning community</span>
             </div>
             <div className="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
@@ -345,10 +353,10 @@ function LoginForm() {
                 <span>Next-Gen Academic Engine</span>
               </div>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white xl:text-4xl leading-[1.15]">
-                A clearer, connected view of academic achievement.
+                A clearer view of learning, for everyone.
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-slate-300">
-                Bring courseware, longitudinal telemetry, multi-agent AI study pods, and guardian transparency into one unified institutional operating system.
+                Bring coursework, progress, and personalized guidance together in one workspace designed for students, educators, and families.
               </p>
             </div>
 
@@ -399,10 +407,10 @@ function LoginForm() {
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <h3 className="mt-3 text-sm font-semibold text-white">
-                  Multi-Agent Study Pods
+                  Personalized AI Insights
                 </h3>
                 <p className="mt-1 text-xs leading-5 text-slate-400">
-                  Elena, Alex, and Dr. Marcus Socratic defense evaluations with peer chat.
+                  Timely guidance and focused practice shaped around each learner&apos;s progress.
                 </p>
               </div>
             </div>
