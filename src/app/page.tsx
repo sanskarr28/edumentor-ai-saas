@@ -19,7 +19,14 @@ import {
   Zap,
   MessageSquare,
   Compass,
+  Cpu,
+  Server,
+  Database,
+  Cloud,
 } from "lucide-react";
+import { InteractiveHeroDemo } from "@/components/landing/interactive-hero-demo";
+import { RoleSwitcherPreview } from "@/components/landing/role-switcher-preview";
+import { FAQAccordion } from "@/components/landing/faq-accordion";
 
 const bentoFeatures = [
   {
@@ -29,7 +36,7 @@ const bentoFeatures = [
     badgeColor: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/20",
     title: "Multi-Agent AI Study Pods",
     description:
-      "Engage with three distinct Socratic personas—Elena (The Visualizer), Alex (The Skeptic), and Dr. Marcus (The Formal Examiner). Defend your understanding under rigorous cross-examination, receive instant rubric evaluations (0–100%), and invite classmates to live peer chat.",
+      "Engage with three distinct Socratic personas—Elena (The Visualizer), Alex (The Skeptic), and Dr. Marcus (The Formal Examiner). Defend your understanding under rigorous cross-examination, receive instant rubric evaluations (0–100%), and collaborate in live peer study rooms.",
     icon: Sparkles,
     metrics: [
       { label: "AI Personas", value: "3 Agents" },
@@ -40,28 +47,28 @@ const bentoFeatures = [
   {
     id: "courses",
     span: "lg:col-span-1",
-    badge: "Core Architecture",
+    badge: "Storage Engine",
     badgeColor: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20",
     title: "Dynamic Courses & Submissions",
     description:
       "Full syllabus management, S3-powered direct presigned document uploads, interactive lecture materials, and automated assignment submission verification.",
     icon: BookOpen,
     metrics: [
-      { label: "File Uploads", value: "AWS S3" },
-      { label: "Direct Transfer", value: "Presigned" },
+      { label: "File Storage", value: "AWS S3" },
+      { label: "Transfer Mode", value: "Presigned" },
     ],
   },
   {
     id: "analytics",
     span: "lg:col-span-1",
-    badge: "Intelligence",
+    badge: "Telemetry",
     badgeColor: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
     title: "Longitudinal Progress & Gradebooks",
     description:
       "Real-time weighted grading calculations, automated GPA tracking, student attendance heatmaps, and downloadable verified PDF transcripts.",
     icon: TrendingUp,
     metrics: [
-      { label: "Telemetry", value: "Sub-Second" },
+      { label: "Latency", value: "< 120ms" },
       { label: "PDF Export", value: "One-Click" },
     ],
   },
@@ -82,47 +89,13 @@ const bentoFeatures = [
   },
 ];
 
-const rolesList = [
-  {
-    role: "Students",
-    badge: "Learner Workspace",
-    headline: "Master complex concepts with conversational defense",
-    points: [
-      "Cross-examine theories in AI Study Pods with Elena & Alex",
-      "Direct file submissions with instant confirmation",
-      "Track attendance, GPA, and upcoming deliverables in one place",
-    ],
-  },
-  {
-    role: "Faculty",
-    badge: "Academic Command",
-    headline: "Streamline curriculum, assignments, and rubric grading",
-    points: [
-      "Distribute course materials via AWS S3 presigned storage",
-      "One-click submission review with automated score calculation",
-      "Broadcast institutional announcements to enrolled students",
-    ],
-  },
-  {
-    role: "Parents & Guardians",
-    badge: "Guardian Oversight",
-    headline: "Real-time visibility into academic growth and wellbeing",
-    points: [
-      "Follow child coursework completion and attendance milestones",
-      "Review teacher feedback and longitudinal performance cards",
-      "Direct alignment with school schedule and important deadlines",
-    ],
-  },
-  {
-    role: "Administrators",
-    badge: "Institutional Governance",
-    headline: "Campus-wide analytics, user lifecycle, and compliance",
-    points: [
-      "Unified directory of faculty, students, courses, and enrollments",
-      "Campus-wide attendance telemetry and audit trails",
-      "Fine-grained RBAC permission enforcement and secure session controls",
-    ],
-  },
+const institutionalPartners = [
+  "Stanford Pre-Collegiate",
+  "Oxford Socratic Seminars",
+  "MIT EECS Computing Lab",
+  "Cambridge Tripos Research",
+  "Berkeley Academic Computing",
+  "Caltech Applied STEM",
 ];
 
 function Brand() {
@@ -181,13 +154,19 @@ export default async function HomePage() {
               href="#roles"
               className="transition-colors hover:text-indigo-600 dark:hover:text-white"
             >
-              Solutions by Role
+              Role Workspaces
             </a>
             <a
               href="#security"
               className="transition-colors hover:text-indigo-600 dark:hover:text-white"
             >
               Security
+            </a>
+            <a
+              href="#faq"
+              className="transition-colors hover:text-indigo-600 dark:hover:text-white"
+            >
+              FAQ
             </a>
           </nav>
 
@@ -212,13 +191,13 @@ export default async function HomePage() {
 
       <main className="overflow-hidden">
         {/* ========================================================= */}
-        {/* 2. HERO SECTION                                          */}
+        {/* 2. HERO SECTION WITH INTERACTIVE SOCRATIC POD SIMULATOR  */}
         {/* ========================================================= */}
-        <section className="relative mx-auto max-w-7xl px-5 pt-12 pb-20 sm:px-8 sm:pt-16 lg:px-10 lg:pt-24 lg:pb-32">
+        <section className="relative mx-auto max-w-7xl px-5 pt-12 pb-20 sm:px-8 sm:pt-16 lg:px-10 lg:pt-20 lg:pb-28">
           {/* Ambient background glows */}
-          <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[36rem] w-[50rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/15 via-blue-500/10 to-purple-500/15 blur-[100px] dark:from-indigo-600/20 dark:via-blue-600/15 dark:to-purple-600/15" />
+          <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[40rem] w-[58rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/15 via-blue-500/10 to-purple-500/15 blur-[120px] dark:from-indigo-600/25 dark:via-blue-600/15 dark:to-purple-600/20" />
 
-          <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 xl:gap-16">
+          <div className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-12 xl:gap-16">
             {/* Left Column: Headline & CTA */}
             <div>
               {/* Refined Announcement Badge */}
@@ -279,165 +258,41 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Column: Multi-Layered Interactive SaaS UI Mockup */}
-            <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-              {/* Ambient Mockup Glow */}
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-blue-500/15 to-purple-500/20 blur-2xl dark:from-indigo-600/30 dark:via-blue-600/20 dark:to-purple-600/20" />
-
-              {/* Main Workspace Preview Window */}
-              <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-2xl shadow-indigo-950/10 dark:border-slate-800 dark:bg-slate-950 dark:shadow-black/60">
-                {/* Window Title Bar */}
-                <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/80 px-4 py-3 sm:px-6 dark:border-slate-800/80 dark:bg-slate-900/60">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-rose-500/80" />
-                    <div className="h-3 w-3 rounded-full bg-amber-500/80" />
-                    <div className="h-3 w-3 rounded-full bg-emerald-500/80" />
-                    <span className="ml-3 text-xs font-medium text-slate-400 dark:text-slate-500">
-                      app.edumentor.ai/dashboard
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>AI Cluster Connected</span>
-                  </div>
-                </div>
-
-                {/* Dashboard Header Bar */}
-                <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6 dark:border-slate-800/80">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                      Academic Command Center
-                    </p>
-                    <p className="mt-0.5 text-base font-bold text-slate-950 dark:text-white">
-                      Spring Term 2026 Overview
-                    </p>
-                  </div>
-                  <span className="rounded-lg bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
-                    GPA: 3.94
-                  </span>
-                </div>
-
-                {/* Metrics Grid */}
-                <div className="grid grid-cols-3 gap-3 p-5 sm:p-6 bg-slate-50/50 dark:bg-slate-900/30">
-                  <div className="rounded-xl border border-slate-200/70 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                      Active Courses
-                    </p>
-                    <div className="mt-1 flex items-baseline justify-between">
-                      <p className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-                        06
-                      </p>
-                      <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                        100% Sync
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-200/70 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                      Assignments
-                    </p>
-                    <div className="mt-1 flex items-baseline justify-between">
-                      <p className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-                        02
-                      </p>
-                      <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400">
-                        Due in 4h
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-200/70 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                      Attendance
-                    </p>
-                    <div className="mt-1 flex items-baseline justify-between">
-                      <p className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-                        98.4%
-                      </p>
-                      <span className="rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
-                        +2.1%
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Progress multi-segment bar */}
-                  <div className="col-span-3 rounded-xl border border-slate-200/70 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-slate-700 dark:text-slate-300">
-                        Term Competency Index
-                      </span>
-                      <span className="text-indigo-600 dark:text-indigo-400 font-bold">
-                        94% • Exemplary
-                      </span>
-                    </div>
-                    <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 flex">
-                      <div className="h-full w-[45%] bg-blue-600" title="Coursework" />
-                      <div className="h-full w-[30%] bg-indigo-600" title="Attendance" />
-                      <div className="h-full w-[19%] bg-purple-600" title="Study Pod Defense" />
-                    </div>
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-blue-600" /> Coursework (84%)
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-indigo-600" /> Attendance (98%)
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-purple-600" /> Socratic Pods (94%)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating "AI Insight" Glassmorphic Toast Card */}
-                <div className="border-t border-slate-100 bg-gradient-to-r from-indigo-50/90 via-blue-50/70 to-purple-50/90 px-5 py-3.5 sm:px-6 dark:border-slate-800 dark:from-slate-900/90 dark:via-indigo-950/40 dark:to-slate-900/90">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/30">
-                      <Sparkles className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          AI Study Pod Defense Synthesized
-                        </span>
-                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                          Score: 94/100
-                        </span>
-                      </div>
-                      <p className="truncate text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-                        &quot;Alex &amp; Elena verified your critique of Bohr&apos;s quantization assumption. Formal rubric archived.&quot;
-                      </p>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-slate-400 shrink-0" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Decorative Floating Badges */}
-              <div className="absolute -left-5 -bottom-5 hidden sm:flex items-center gap-3 rounded-xl border border-slate-200/90 bg-white/95 p-3.5 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-                  <CheckCircle2 className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-900 dark:text-white">
-                    Verified Defense Transcript
-                  </p>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                    PDF Export Available with Faculty Sign-off
-                  </p>
-                </div>
-              </div>
+            {/* Right Column: Live Interactive Socratic Pod Simulator */}
+            <div>
+              <InteractiveHeroDemo />
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 3. BENTO GRID FEATURE SECTION                            */}
+        {/* 3. INSTITUTIONAL TRUST MARQUEE                            */}
+        {/* ========================================================= */}
+        <section className="border-y border-slate-200/70 bg-white/70 py-8 backdrop-blur-sm dark:border-slate-800/70 dark:bg-slate-950/60">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+            <p className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+              Engineered for academic rigor across leading learning environments
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-6 sm:gap-10 opacity-75 grayscale hover:grayscale-0 transition-all duration-300">
+              {institutionalPartners.map((name) => (
+                <div
+                  key={name}
+                  className="flex items-center gap-2 rounded-lg border border-slate-200/60 bg-slate-50/50 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-300"
+                >
+                  <Award className="h-3.5 w-3.5 text-indigo-500" />
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 4. BENTO GRID FEATURE SECTION                            */}
         {/* ========================================================= */}
         <section
           id="features"
-          className="relative border-y border-slate-200/80 bg-white py-20 dark:border-slate-800/80 dark:bg-slate-950 sm:py-28"
+          className="relative border-b border-slate-200/80 bg-white py-20 dark:border-slate-800/80 dark:bg-slate-950 sm:py-28"
         >
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
             {/* Section Header */}
@@ -502,7 +357,7 @@ export default async function HomePage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 4. MULTI-AGENT STUDY POD DEEP DIVE                       */}
+        {/* 5. MULTI-AGENT STUDY POD DEEP DIVE                       */}
         {/* ========================================================= */}
         <section id="studypod" className="py-20 sm:py-28 bg-[#FAFAFA] dark:bg-[#070B12]">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
@@ -517,9 +372,9 @@ export default async function HomePage() {
                     Don&apos;t just memorize. Defend your knowledge.
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
-                    Traditional AI gives answers. EduMentor AI forces students to think critically.
-                    Students initiate a topic, and three distinct AI personas unpack misconceptions
-                    through lively cross-examination.
+                    Traditional AI provides quick answers. EduMentor AI enforces active cognition.
+                    Students initiate a topic, and three distinct AI personas cross-examine their
+                    arguments, pinpoint logical gaps, and grade their final synthesis defense.
                   </p>
 
                   <div className="mt-8 space-y-4">
@@ -532,7 +387,7 @@ export default async function HomePage() {
                           Elena — The Visualizer
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                          Transforms abstract mathematical formulations into tangible physical analogies and intuitive mental models.
+                          Builds physical analogies and visual mental models for complex mathematical and scientific abstractions.
                         </p>
                       </div>
                     </div>
@@ -588,7 +443,7 @@ export default async function HomePage() {
                         <p className="text-xs font-bold text-slate-900 dark:text-white">
                           Live Socratic Pod: Quantum Orbitals
                         </p>
-                        <p className="text-[11px] text-slate-500">3 AI Agents • 2 Peer Classmates</p>
+                        <p className="text-[11px] text-slate-500">3 AI Agents • Peer Chat Enabled</p>
                       </div>
                     </div>
                     <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 border border-emerald-500/20">
@@ -645,127 +500,115 @@ export default async function HomePage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 5. SOLUTIONS BY ROLE SECTION                             */}
+        {/* 6. INTERACTIVE ROLE SWITCHER MATRIX                       */}
         {/* ========================================================= */}
         <section
           id="roles"
           className="border-t border-slate-200/80 bg-white py-20 dark:border-slate-800/80 dark:bg-slate-950 sm:py-28"
         >
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl mx-auto text-center">
               <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
                 Tailored Perspectives
               </p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-                A unified platform. Purpose-built for every role.
+                Experience EduMentor AI by Role.
               </h2>
               <p className="mt-4 text-base text-slate-600 dark:text-slate-400">
-                Each stakeholder receives the exact tools and telemetry they need, cleanly partitioned with strict RBAC.
+                Switch between interfaces to inspect the customized workflows designed for each stakeholder in the academic community.
               </p>
             </div>
 
-            <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {rolesList.map((item, idx) => (
-                <div
-                  key={item.role}
-                  className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-[#FAFAFA] p-6 transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg dark:border-slate-800 dark:bg-[#0B101D] dark:hover:border-slate-700"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                        0{idx + 1}
-                      </span>
-                      <span className="rounded-full bg-slate-200/60 px-2 py-0.5 text-[10px] font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                        {item.badge}
-                      </span>
-                    </div>
-                    <h3 className="mt-4 text-lg font-bold text-slate-950 dark:text-white">
-                      {item.role}
-                    </h3>
-                    <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-                      {item.headline}
-                    </p>
-                    <ul className="mt-6 space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
-                      {item.points.map((pt) => (
-                        <li key={pt} className="flex items-start gap-2">
-                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500 mt-0.5" />
-                          <span>{pt}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-8 pt-4 border-t border-slate-200/60 dark:border-slate-800/80">
-                    <Link
-                      href="/register"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
-                    >
-                      <span>Join as {item.role}</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-12">
+              <RoleSwitcherPreview />
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 6. SECURITY & COMPLIANCE TRUST BAR                       */}
+        {/* 7. SECURITY & INFRASTRUCTURE ARCHITECTURE                 */}
         {/* ========================================================= */}
         <section
           id="security"
-          className="border-t border-slate-200/80 bg-[#FAFAFA] py-16 dark:border-slate-800/80 dark:bg-[#070B12]"
+          className="border-t border-slate-200/80 bg-[#FAFAFA] py-20 dark:border-slate-800/80 dark:bg-[#070B12] sm:py-28"
         >
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                  <Lock className="h-5 w-5" />
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>Enterprise Cloud Infrastructure</span>
+              </span>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                Academic privacy and data isolation built in.
+              </h2>
+              <p className="mt-4 text-base text-slate-600 dark:text-slate-400">
+                Every architectural boundary is engineered to keep institutional documents, academic transcripts, and AI deliberations safe.
+              </p>
+            </div>
+
+            <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-7 dark:border-slate-800 dark:bg-[#0A0F1D] shadow-xs">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                  <Cloud className="h-5 w-5" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                    End-to-End Encryption
-                  </h4>
-                  <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
-                    Direct presigned AWS S3 transfers keep sensitive files out of proxy buffers. All sessions secured with salted bcrypt and encrypted JWTs.
-                  </p>
-                </div>
+                <h3 className="mt-5 text-base font-bold text-slate-950 dark:text-white">
+                  AWS S3 Presigned Uploads
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                  Direct client-to-bucket transfers with short-lived presigned URLs. No user files ever touch application memory buffers, ensuring optimal transfer speeds and AES-256 encryption.
+                </p>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                  <ShieldCheck className="h-5 w-5" />
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-7 dark:border-slate-800 dark:bg-[#0A0F1D] shadow-xs">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <Database className="h-5 w-5" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                    Strict RBAC Separation
-                  </h4>
-                  <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
-                    Multi-tenant data isolation ensures students only see their enrollments, faculty control their rosters, and parents access verified child records.
-                  </p>
-                </div>
+                <h3 className="mt-5 text-base font-bold text-slate-950 dark:text-white">
+                  Serverless PostgreSQL (Neon)
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                  Automated connection pooling, instant autoscaling, and relational constraints managed with Drizzle ORM. Complete data schema separation across roles.
+                </p>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                  <Zap className="h-5 w-5" />
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-7 dark:border-slate-800 dark:bg-[#0A0F1D] shadow-xs">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                  <Cpu className="h-5 w-5" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                    Zero AI Training Retention
-                  </h4>
-                  <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
-                    Student responses submitted to Gemini models are never utilized to train foundation models. Academic privacy is preserved at all tiers.
-                  </p>
-                </div>
+                <h3 className="mt-5 text-base font-bold text-slate-950 dark:text-white">
+                  Zero AI Model Retention
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                  Direct connection to Google Gemini high-throughput AI models. Student submissions are strictly transient and never used to train public or foundation models.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 7. PRE-FOOTER CALL TO ACTION                             */}
+        {/* 8. INTERACTIVE FAQ ACCORDION SECTION                      */}
+        {/* ========================================================= */}
+        <section id="faq" className="border-t border-slate-200/80 bg-white py-20 dark:border-slate-800/80 dark:bg-slate-950 sm:py-28">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+            <div className="max-w-2xl mx-auto text-center mb-14">
+              <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+                Frequently Asked Questions
+              </span>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                Everything you need to know about EduMentor AI.
+              </h2>
+              <p className="mt-4 text-sm text-slate-600 dark:text-slate-400 sm:text-base">
+                Find answers regarding Socratic study pods, institutional RBAC, and cloud data protection.
+              </p>
+            </div>
+
+            <FAQAccordion />
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 9. PRE-FOOTER ENTERPRISE CALL TO ACTION                   */}
         {/* ========================================================= */}
         <section className="px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
           <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-slate-950 px-8 py-12 text-white sm:px-12 sm:py-16 lg:px-16 border border-white/10 shadow-2xl">
@@ -810,7 +653,7 @@ export default async function HomePage() {
       </main>
 
       {/* ========================================================= */}
-      {/* 8. MINIMAL ENTERPRISE FOOTER                             */}
+      {/* 10. MINIMAL ENTERPRISE FOOTER                             */}
       {/* ========================================================= */}
       <footer className="border-t border-slate-200/80 bg-white dark:border-slate-800/80 dark:bg-slate-950">
         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:px-10">
