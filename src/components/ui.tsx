@@ -16,12 +16,12 @@ type ButtonSize = "sm" | "md" | "lg";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-blue-700 text-white shadow-sm shadow-blue-900/15 hover:bg-blue-800 disabled:bg-blue-300",
+    "bg-[#173d3d] text-white shadow-sm shadow-[#173d3d]/15 hover:bg-[#245653] disabled:bg-[#9db9a6]",
   secondary: "bg-slate-900 text-white hover:bg-slate-800 disabled:bg-slate-400",
   ghost: "bg-transparent text-slate-600 hover:bg-slate-100 disabled:text-slate-300",
   danger: "bg-rose-600 text-white hover:bg-rose-500 disabled:bg-rose-300",
   outline:
-    "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 disabled:text-slate-300",
+    "border border-[#dfe6df] bg-white text-[#405651] hover:border-[#b9ccbd] hover:bg-[#f6f8f4] disabled:text-slate-300",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -45,7 +45,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-2 rounded-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#54836b] disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className,
@@ -90,7 +90,7 @@ export function Card({ className, children }: { className?: string; children: Re
   return (
     <div
       className={cn(
-        "rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors",
+        "rounded-[16px] border border-[#e4eae3] dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-[0_2px_8px_rgba(22,47,36,0.035)] transition-colors",
         className,
       )}
     >
@@ -118,7 +118,7 @@ export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInp
   return (
     <input
       className={cn(
-        "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-shadow focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10",
+        "w-full rounded-[11px] border border-[#dfe6df] dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-[#203638] dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-shadow focus:border-[#75a087] focus:outline-none focus:ring-4 focus:ring-[#54836b]/10",
         className,
       )}
       {...props}
@@ -133,7 +133,7 @@ export function Textarea({
   return (
     <textarea
       className={cn(
-        "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-shadow focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10",
+        "w-full rounded-[11px] border border-[#dfe6df] dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-[#203638] dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-shadow focus:border-[#75a087] focus:outline-none focus:ring-4 focus:ring-[#54836b]/10",
         className,
       )}
       {...props}
@@ -149,7 +149,7 @@ export function Select({
   return (
     <select
       className={cn(
-        "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition-shadow focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/10",
+        "w-full rounded-[11px] border border-[#dfe6df] dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-[#203638] dark:text-slate-100 transition-shadow focus:border-[#75a087] focus:outline-none focus:ring-4 focus:ring-[#54836b]/10",
         className,
       )}
       {...props}

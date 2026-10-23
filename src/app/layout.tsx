@@ -11,16 +11,16 @@ const geist = localFont({
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FAFAFA" },
-    { media: "(prefers-color-scheme: dark)", color: "#070B12" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#101815" },
   ],
   colorScheme: "light dark",
 };
 
 export const metadata: Metadata = {
-  title: "EduMentor AI — Connected Learning Workspace",
+  title: "EduMentor AI | A connected learning workspace",
   description:
-    "A connected academic workspace for courses, progress, and personalized learning support across students, faculty, families, and institutions.",
+    "Bring courses, assignments, progress, and personalized learning support together for students, educators, and families.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

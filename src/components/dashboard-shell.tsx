@@ -3,72 +3,65 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+  Activity,
+  Bell,
+  BookOpen,
+  CalendarDays,
+  ChartNoAxesCombined,
+  Check,
+  ChevronRight,
+  FileText,
+  GraduationCap,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Megaphone,
+  Moon,
+  PanelLeftClose,
+  Settings2,
+  ShieldCheck,
+  Sparkles,
+  Sun,
+  UsersRound,
+  X,
+} from "lucide-react";
 import { useSession } from "@/components/session-provider";
-import { initials, roleBadgeClasses, timeAgo, cn } from "@/lib/utils";
+import { initials, timeAgo, cn } from "@/lib/utils";
 import { useToast } from "@/components/ui";
 import { ChatBot } from "@/components/chatbot";
 
-type NavItem = {
-  href: string;
-  label: string;
-  icon: "overview" | "courses" | "assignments" | "attendance" | "grades" | "insights" | "learn" | "studyPod" | "announcements" | "reports" | "admin";
-  roles: Array<"admin" | "teacher" | "student" | "parent">;
-};
+type Role = "admin" | "teacher" | "student" | "parent";
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; roles: Role[] };
+type NotificationItem = { id: string; title: string; message: string; isRead: boolean; createdAt: string; type: string; link?: string | null };
 
-const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Overview", icon: "overview", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/courses", label: "Courses", icon: "courses", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/assignments", label: "Assignments", icon: "assignments", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/attendance", label: "Attendance", icon: "attendance", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/grades", label: "Gradebook", icon: "grades", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/insights", label: "AI Insights", icon: "insights", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/edulearn", label: "EduLearn", icon: "learn", roles: ["student"] },
-  { href: "/dashboard/study-pod", label: "AI Study Pod", icon: "studyPod", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/announcements", label: "Announcements", icon: "announcements", roles: ["admin", "teacher", "student", "parent"] },
-  { href: "/dashboard/reports", label: "Reports", icon: "reports", roles: ["admin", "teacher"] },
-  { href: "/dashboard/users", label: "Administration", icon: "admin", roles: ["admin"] },
+const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
+  { label: "Workspace", items: [
+    { href: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/courses", label: "Courses", icon: BookOpen, roles: ["admin", "teacher", "student", "parent"] },
+  ] },
+  { label: "Learning", items: [
+    { href: "/dashboard/assignments", label: "Assignments", icon: FileText, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/attendance", label: "Attendance", icon: CalendarDays, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/grades", label: "Gradebook", icon: ChartNoAxesCombined, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/edulearn", label: "EduLearn", icon: GraduationCap, roles: ["student"] },
+    { href: "/dashboard/study-pod", label: "AI Study Pod", icon: Sparkles, roles: ["admin", "teacher", "student", "parent"] },
+  ] },
+  { label: "Community", items: [
+    { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/insights", label: "AI Insights", icon: Activity, roles: ["admin", "teacher", "student", "parent"] },
+    { href: "/dashboard/reports", label: "Reports", icon: ChartNoAxesCombined, roles: ["admin", "teacher"] },
+    { href: "/dashboard/users", label: "Administration", icon: ShieldCheck, roles: ["admin"] },
+  ] },
 ];
 
-const NAV_ICON_PATHS: Record<NavItem["icon"], string> = {
-  overview: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z",
-  courses: "M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5zm0 0V21m4-14h8m-8 4h8",
-  assignments: "M8 4h8m-8 4h8m-8 4h5m-9 9V3h16v18z",
-  attendance: "M4 5h16v16H4zm4-3v6m8-6v6M4 10h16m-11 5 2 2 4-4",
-  grades: "M4 19V5m0 14h17M8 15l3-4 3 2 5-7",
-  insights: "M12 3l2.1 5.9L20 11l-5.9 2.1L12 19l-2.1-5.9L4 11l5.9-2.1zM19 16v5m-2.5-2.5h5",
-  learn: "M3 5.5A2.5 2.5 0 0 1 5.5 3H12v17H5.5A2.5 2.5 0 0 0 3 22zm18 0A2.5 2.5 0 0 0 18.5 3H12v17h6.5a2.5 2.5 0 0 1 2.5 2z",
-  studyPod: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 10v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75",
-  announcements: "M4 14V9l14-5v15L4 14zm0 0-1 5h5l2-3m13-7v7",
-  reports: "M4 20V4m0 16h17M8 16v-4m5 4V7m5 9v-6",
-  admin: "M12 3 4 6v5c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6zm-3 9 2 2 4-4",
-};
-
-function NavIcon({ name }: { name: NavItem["icon"] }) {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px] shrink-0"> <path d={NAV_ICON_PATHS[name]} /></svg>;
+function Brand({ compact = false }: { compact?: boolean }) {
+  return <span className="inline-flex items-center gap-2.5"><span className="flex size-9 items-center justify-center rounded-[13px] bg-[#173d3d] text-[12px] font-semibold tracking-tight text-white">E.</span>{!compact && <span className="text-[14px] font-semibold tracking-[-0.04em] text-[#1b3234]">EduMentor<span className="text-[#668476]"> AI</span></span>}</span>;
 }
 
-function ThemeIcon({ darkMode }: { darkMode: boolean }) {
-  return darkMode ? (
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
-    </svg>
-  ) : (
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-      <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z" />
-    </svg>
-  );
+function ThemeIcon() {
+  return <><Moon aria-hidden="true" className="workspace-theme-moon size-[17px]" /><Sun aria-hidden="true" className="workspace-theme-sun size-[17px]" /></>;
 }
-
-type NotificationItem = {
-  id: string;
-  title: string;
-  message: string;
-  isRead: boolean;
-  createdAt: string;
-  type: string;
-  link?: string | null;
-};
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const user = useSession();
@@ -79,36 +72,20 @@ export function DashboardShell({ children }: { children: ReactNode }) {
   const [bellOpen, setBellOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loadingOut, setLoadingOut] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const bellRef = useRef<HTMLDivElement>(null);
+  const currentItem = NAV_GROUPS.flatMap((group) => group.items).find((item) => item.href === pathname);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     const isDark = saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    if (isDark) {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
   function toggleDarkMode() {
-    setDarkMode((prev) => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      }
-      return next;
-    });
+    const next = !document.documentElement.classList.contains("dark");
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
   }
-
-  const items = NAV_ITEMS.filter((item) => item.roles.includes(user.role));
 
   useEffect(() => {
     let active = true;
@@ -119,36 +96,27 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         const data = await res.json();
         if (active) setNotifications(data.notifications ?? []);
       } catch {
-        // ignore
+        // Notifications are optional and should not interrupt workspace navigation.
       }
     }
     load();
     const interval = setInterval(load, 20000);
-    return () => {
-      active = false;
-      clearInterval(interval);
-    };
+    return () => { active = false; clearInterval(interval); };
   }, []);
 
   useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (bellRef.current && !bellRef.current.contains(e.target as Node)) {
-        setBellOpen(false);
-      }
+    function onClick(event: MouseEvent) {
+      if (bellRef.current && !bellRef.current.contains(event.target as Node)) setBellOpen(false);
     }
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((notification) => !notification.isRead).length;
 
   async function markAllRead() {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-    try {
-      await fetch("/api/notifications/read-all", { method: "PATCH" });
-    } catch {
-      // ignore
-    }
+    setNotifications((previous) => previous.map((notification) => ({ ...notification, isRead: true })));
+    try { await fetch("/api/notifications/read-all", { method: "PATCH" }); } catch { /* Keep the local acknowledgement visible. */ }
   }
 
   async function handleLogout() {
@@ -164,183 +132,36 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     }
   }
 
+  const sidebarContent = (
+    <div className="flex h-full flex-col px-4 pb-4 pt-5">
+      <div className="mb-8 flex items-center justify-between px-1"><Link href="/dashboard" aria-label="EduMentor dashboard" onClick={() => setMobileOpen(false)}><Brand /></Link><button type="button" onClick={() => setMobileOpen(false)} className="rounded-lg p-2 text-[#788783] hover:bg-[#eff3ee] lg:hidden" aria-label="Close navigation"><X aria-hidden="true" className="size-4" /></button><span className="hidden size-8 items-center justify-center rounded-lg text-[#91a098] lg:flex"><PanelLeftClose aria-hidden="true" className="size-4" /></span></div>
+      <div className="mb-5 rounded-[14px] border border-[#e6ece5] bg-[#f5f7f3] px-3.5 py-3"><p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-[#819089]">Your workspace</p><div className="mt-2 flex items-center gap-2"><span className="size-2 rounded-full bg-[#6ea37c]" /><span className="text-[11px] font-medium capitalize text-[#3d5650]">{user.role} account</span></div></div>
+      <nav aria-label="Workspace navigation" className="flex-1 overflow-y-auto pb-4">
+        {NAV_GROUPS.map((group) => {
+          const visibleItems = group.items.filter((item) => item.roles.includes(user.role));
+          if (!visibleItems.length) return null;
+          return <div key={group.label} className="mb-6"><p className="mb-2 px-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#9aa59e]">{group.label}</p><div className="flex flex-col gap-1">{visibleItems.map((item) => {
+            const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
+            const Icon = item.icon;
+            return <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)} aria-current={active ? "page" : undefined} className={cn("group flex min-h-10 items-center gap-3 rounded-[10px] px-3 text-[12px] font-medium transition-colors", active ? "bg-[#eaf2e9] text-[#2c5b48]" : "text-[#667570] hover:bg-[#f2f5f0] hover:text-[#2f4c43]")}><Icon aria-hidden="true" className={cn("size-[16px] shrink-0", active ? "text-[#4e8065]" : "text-[#8a9890] group-hover:text-[#557c67]")} />{item.label}{active && <ChevronRight aria-hidden="true" className="ml-auto size-3.5 text-[#77a083]" />}</Link>;
+          })}</div></div>;
+        })}
+      </nav>
+      <div className="border-t border-[#e9ede8] pt-3"><Link href="/dashboard/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-[#f3f6f1]"><span className="flex size-9 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white" style={{ backgroundColor: user.avatarColor }}>{initials(user.name)}</span><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-semibold text-[#304446]">{user.name}</span><span className="mt-0.5 block truncate text-[10px] capitalize text-[#86928b]">{user.role}</span></span><Settings2 aria-hidden="true" className="size-4 text-[#91a098]" /></Link><button type="button" onClick={handleLogout} disabled={loadingOut} className="mt-1 flex min-h-9 w-full items-center gap-3 rounded-[10px] px-3 text-[11px] font-medium text-[#74817b] transition-colors hover:bg-[#fbf0ed] hover:text-[#a35447] disabled:opacity-60"><LogOut aria-hidden="true" className="size-4" />{loadingOut ? "Signing out…" : "Sign out"}</button></div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-[#f4f6fa] dark:bg-[#080C14] text-slate-900 dark:text-slate-100 selection:bg-blue-100 selection:text-blue-900 transition-colors">
-      {/* Mobile top bar */}
-      <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#0B111E] px-4 py-3 lg:hidden">
-        <Link href="/dashboard" className="flex items-center gap-2.5 font-semibold tracking-tight text-slate-950 dark:text-white">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-700 text-sm font-bold text-white shadow-md shadow-blue-900/15">E</span>
-          EduMentor <span className="-ml-2 text-blue-700">AI</span>
-        </Link>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={toggleDarkMode}
-            className="flex items-center gap-1 rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50"
-            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            <ThemeIcon darkMode={darkMode} />
-          </button>
-          <button
-            type="button"
-            onClick={() => setMobileOpen((v) => !v)}
-            className="rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50"
-            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
-          >
-            {mobileOpen ? (
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4"><path strokeLinecap="round" d="m6 6 12 12M18 6 6 18" /></svg>
-            ) : (
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" /></svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      <div className="mx-auto flex max-w-[1600px]">
-        {/* Sidebar */}
-        <aside
-          className={cn(
-            "z-40 w-64 shrink-0 border-r border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#0B111E] lg:sticky lg:top-0 lg:block lg:h-screen transition-colors",
-            mobileOpen ? "block" : "hidden",
-          )}
-        >
-          <div className="flex h-full flex-col px-3.5 py-6">
-            <Link href="/dashboard" className="mb-9 hidden items-center gap-3 px-2 text-[15px] font-semibold tracking-tight text-slate-950 dark:text-white lg:flex">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-700 text-sm font-bold text-white shadow-md shadow-blue-900/15">E</span>
-              EduMentor <span className="-ml-2 text-blue-700">AI</span>
-            </Link>
-            <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Workspace</p>
-            <nav aria-label="Workspace navigation" className="flex-1 space-y-1">
-              {items.map((item) => {
-                const active = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-all",
-                      active
-                        ? "bg-blue-50 text-blue-800 ring-1 ring-blue-100 dark:bg-slate-800/80 dark:text-blue-400 dark:ring-1 dark:ring-slate-700"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-950 dark:hover:text-slate-100",
-                    )}
-                  >
-                    <NavIcon name={item.icon} />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-            <div className="mt-6 border-t border-slate-200/80 pt-4">
-              <Link
-                href="/dashboard/profile"
-                className="flex items-center gap-3 rounded-lg px-2 py-2 transition hover:bg-slate-50"
-              >
-                <div
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ backgroundColor: user.avatarColor }}
-                >
-                  {initials(user.name)}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-slate-800">{user.name}</p>
-                  <p className="truncate text-xs capitalize text-slate-500">{user.role}</p>
-                </div>
-              </Link>
-              <button
-                onClick={handleLogout}
-                disabled={loadingOut}
-                className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-rose-50 hover:text-rose-700 disabled:opacity-60"
-              >
-                <span aria-hidden="true">↪</span> {loadingOut ? "Signing out…" : "Sign out"}
-              </button>
-            </div>
-          </div>
-        </aside>
-
-        {/* Main content */}
+    <div className="workspace-shell min-h-screen bg-[#f6f8f5] text-[#203638] selection:bg-[#d8eadf] selection:text-[#173d3d] transition-colors">
+      <div className="flex min-h-screen">
+        {mobileOpen && <button type="button" aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="fixed inset-0 z-40 bg-[#122c2c]/25 backdrop-blur-[2px] lg:hidden" />}
+        <aside className={cn("workspace-sidebar z-50 w-[252px] shrink-0 border-r border-[#e6ebe5] bg-[#fbfcfa] transition-transform duration-200 lg:sticky lg:top-0 lg:z-20 lg:block lg:h-screen lg:translate-x-0", mobileOpen ? "fixed inset-y-0 left-0 translate-x-0" : "fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0")}>{sidebarContent}</aside>
         <div className="min-w-0 flex-1">
-          <header className="sticky top-0 z-30 hidden items-center justify-between border-b border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-[#0B111E]/90 px-8 py-3.5 backdrop-blur-xl lg:flex transition-colors">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Your workspace</p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">Welcome back, {user.name.split(" ")[0]}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={toggleDarkMode}
-                className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              >
-                <ThemeIcon darkMode={darkMode} />
-                <span>{darkMode ? "Light mode" : "Dark mode"}</span>
-              </button>
-
-              <span className={cn("rounded-full px-3 py-1 text-xs font-semibold capitalize", roleBadgeClasses(user.role))}>
-                {user.role}
-              </span>
-              <div className="relative" ref={bellRef}>
-                <button
-                  onClick={() => setBellOpen((v) => !v)}
-                  className="relative rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-2 text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700"
-                  aria-label="Notifications"
-                >
-                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-                  </svg>
-                  {unreadCount > 0 && (
-                    <span className="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
-                      {unreadCount}
-                    </span>
-                  )}
-                </button>
-                {bellOpen && (
-                  <div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-xl">
-                    <div className="flex items-center justify-between px-2 py-1">
-                      <p className="text-sm font-semibold text-slate-800">Notifications</p>
-                      {unreadCount > 0 && (
-                        <button onClick={markAllRead} className="text-xs font-medium text-indigo-600 hover:underline">
-                          Mark all read
-                        </button>
-                      )}
-                    </div>
-                    <div className="max-h-80 overflow-y-auto">
-                      {notifications.length === 0 ? (
-                        <p className="px-2 py-6 text-center text-xs text-slate-400">No notifications yet</p>
-                      ) : (
-                        notifications.map((n) => (
-                          <div
-                            key={n.id}
-                            className={cn(
-                              "rounded-lg px-2.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800/80",
-                              !n.isRead && "bg-indigo-50/70 dark:bg-indigo-950/40",
-                            )}
-                          >
-                            <p className="font-semibold text-slate-800 dark:text-slate-100 text-xs">{n.title}</p>
-                            <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">{n.message}</p>
-                            <div className="mt-1 flex items-center justify-between">
-                              <span className="text-[10px] text-slate-400 dark:text-slate-500">{timeAgo(n.createdAt)}</span>
-                              {n.type === "study_pod_invite" && (
-                                <Link
-                                  href="/dashboard/study-pod"
-                                  onClick={() => setBellOpen(false)}
-                                  className="inline-flex items-center gap-1 rounded bg-indigo-600 px-2 py-0.5 text-[10px] font-semibold text-white hover:bg-indigo-700 transition"
-                                >
-                                  Respond in Pod →
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+          <header className="workspace-topbar sticky top-0 z-30 flex h-[66px] items-center justify-between border-b border-[#e6ebe5] bg-[#fbfcfa]/95 px-4 backdrop-blur-xl sm:px-6 lg:px-9">
+            <div className="flex min-w-0 items-center gap-3"><button type="button" onClick={() => setMobileOpen(true)} className="flex size-9 shrink-0 items-center justify-center rounded-[10px] border border-[#e4eae3] bg-white text-[#65746d] transition hover:bg-[#f3f6f2] lg:hidden" aria-label="Open navigation"><Menu aria-hidden="true" className="size-4" /></button><div className="min-w-0"><p className="truncate text-[10px] text-[#95a098]">EduMentor <span className="px-1 text-[#c2cbc3]">/</span> <span className="capitalize">{currentItem?.label ?? "Workspace"}</span></p><p className="mt-0.5 truncate text-[12px] font-semibold text-[#34494a]">Good to see you, {user.name.split(" ")[0]}</p></div></div>
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3"><button type="button" onClick={toggleDarkMode} className="flex size-9 items-center justify-center rounded-[10px] border border-[#e4eae3] bg-white text-[#78867f] transition hover:bg-[#f3f6f2]" title="Toggle color theme" aria-label="Toggle color theme"><ThemeIcon /></button><div className="relative" ref={bellRef}><button type="button" onClick={() => setBellOpen((value) => !value)} className="relative flex size-9 items-center justify-center rounded-[10px] border border-[#e4eae3] bg-white text-[#78867f] transition hover:bg-[#f3f6f2]" aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ""}`} aria-expanded={bellOpen}><Bell aria-hidden="true" className="size-[17px]" />{unreadCount > 0 && <span className="absolute -right-1 -top-1 flex min-h-[16px] min-w-[16px] items-center justify-center rounded-full border-2 border-[#fbfcfa] bg-[#c66d5c] px-1 text-[8px] font-bold text-white">{unreadCount}</span>}</button>{bellOpen && <div className="absolute right-0 z-50 mt-2 w-[min(340px,calc(100vw-32px))] overflow-hidden rounded-[16px] border border-[#e4eae3] bg-white shadow-[0_18px_50px_-20px_rgba(26,51,41,.25)]"><div className="flex items-center justify-between border-b border-[#eef1ed] px-4 py-3"><div><p className="text-[12px] font-semibold text-[#2b4242]">Notifications</p><p className="mt-0.5 text-[9px] text-[#89958e]">Updates for your workspace</p></div>{unreadCount > 0 && <button type="button" onClick={markAllRead} className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#4f7d64] hover:text-[#254c3c]"><Check aria-hidden="true" className="size-3.5" /> Mark all read</button>}</div><div className="max-h-[360px] overflow-y-auto p-2">{notifications.length === 0 ? <p className="px-3 py-8 text-center text-[11px] text-[#909b94]">You&apos;re all caught up.</p> : notifications.map((notification) => <div key={notification.id} className={cn("rounded-[11px] px-3 py-2.5 transition hover:bg-[#f7f9f6]", !notification.isRead && "bg-[#f1f6ef]")}><p className="text-[11px] font-semibold text-[#354a49]">{notification.title}</p><p className="mt-1 text-[10px] leading-4 text-[#76837d]">{notification.message}</p><div className="mt-2 flex items-center justify-between"><span className="text-[9px] text-[#a0aaa3]">{timeAgo(notification.createdAt)}</span>{notification.type === "study_pod_invite" && <Link href="/dashboard/study-pod" onClick={() => setBellOpen(false)} className="text-[9px] font-semibold text-[#4f7d64] hover:underline">Open study pod <ChevronRight aria-hidden="true" className="ml-1 inline size-3" /></Link>}</div></div>)}</div></div>}</div><Link href="/dashboard/profile" aria-label="Open your profile" className="ml-1 flex items-center gap-2.5 rounded-full p-1 transition hover:bg-[#f1f4ef]"><span className="hidden text-right sm:block"><span className="block text-[10px] font-semibold text-[#34494a]">{user.name}</span><span className="mt-0.5 block text-[9px] capitalize text-[#8a9690]">{user.role}</span></span><span className="flex size-8 items-center justify-center rounded-full text-[10px] font-semibold text-white" style={{ backgroundColor: user.avatarColor }}>{initials(user.name)}</span></Link></div>
           </header>
-          <main className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+          <main className="workspace-content mx-auto min-h-[calc(100vh-66px)] max-w-[1440px] px-4 py-6 sm:px-6 sm:py-7 lg:px-9 lg:py-9">{children}</main>
         </div>
       </div>
       <ChatBot userRole={user.role} userName={user.name} />
